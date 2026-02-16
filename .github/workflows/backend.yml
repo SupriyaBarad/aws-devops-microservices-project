@@ -1,0 +1,34 @@
+name: Backend CI/CD
+
+on:
+  push:
+    paths:
+      - 'backend/**' # Only runs when code in the backend folder changes
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.dckr_pat_sN8IKdlty_kv1qd2x_luIP0aB24 }}" | docker login -u "${{ secrets.supriyabarad }}" --password-stdin
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.supriyabarad }}/backend-api ./backend
+          docker push ${{ secrets.supriyabarad }}/backend-api
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AKIA5Y3BHOZNLVPA7SHG }}
+          aws-secret-access-key: ${{ secrets.oLlzK+oERVxQ9AtbvdBAWzZg+aavALDFYOt33TX3 }}
+          aws-region: ap-south-1
+
+      - name: Update Kubeconfig & Deploy to EKS
+        run: |
+          aws eks update-kubeconfig --name devops-cluster --region ap-south-1
+          kubectl apply -f k8s/backend.yaml
+          kubectl rollout restart deployment backend
