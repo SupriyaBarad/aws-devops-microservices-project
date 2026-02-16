@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Login to Docker Hub
-        run: echo "${{ secrets.dckr_pat_sN8IKdlty_kv1qd2x_luIP0aB24 }}" | docker login -u "${{ secrets.supriyabarad }}" --password-stdin
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.supriyabarad }}" --password-stdin
 
       - name: Build and Push Docker Image
         run: |
