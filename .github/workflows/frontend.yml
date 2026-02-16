@@ -22,7 +22,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AKIA5Y3BHOZNLVPA7SHG }}
-          aws-secret-access-key: ${{ secrets.oLlzK+oERVxQ9AtbvdBAWzZg+aavALDFYOt33TX3 }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
       - name: Deploy to S3
